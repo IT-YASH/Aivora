@@ -15,6 +15,7 @@ const Dashboard = () => {
   const { getToken } = useAuth();
 
   const getDashboardData = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get("/api/user/get-user-creations", {
         headers: { Authorization: `Bearer ${await getToken()}` },
@@ -32,7 +33,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getDashboardData();
-  });
+  }, []);
 
   return (
     <div className="h-full overflow-y-scroll p-6">

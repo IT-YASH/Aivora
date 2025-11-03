@@ -5,7 +5,7 @@ import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import FormData from "form-data";
 import fs from "fs";
-import * as pdf from "pdf-parse";
+import { PDFParse } from "pdf-parse";
 
 const AI = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -208,7 +208,7 @@ export const generateImage = async (req, res) => {
 export const removeImageBackground = async (req, res) => {
   try {
     const { userId } = req.auth();
-    const file = req.file; 
+    const file = req.file;
     const plan = req.plan;
 
     if (plan !== "premium") {
@@ -342,7 +342,7 @@ export const reviewResume = async (req, res) => {
 
     // ✅ Read PDF file and parse
     const dataBuffer = fs.readFileSync(resume.path);
-    const pdfData = await pdf.default(dataBuffer); // ✅ Use pdf.default
+    const pdfData = new PDFParse(dataBuffer);
 
     const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume content:\n\n${pdfData.text}`;
 
