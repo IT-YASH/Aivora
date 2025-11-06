@@ -68,13 +68,14 @@ The project is deployed on **Vercel (frontend)** and **serverless backend** for 
 ---
 
 ## Run Project
-### 1️⃣ Frontend
 
+### 1️⃣ Frontend
 1. Navigate to frontend folder:
 - cd client
 - npm i
 - npm run dev
 
+### 2️⃣ Backend
 2.Navigate to backend folder:
 - cd server
 - npm i
