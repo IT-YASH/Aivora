@@ -5,6 +5,8 @@ import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import FormData from "form-data";
 import fs from "fs";
+import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js"; 
+const { getDocument } = pdfjsLib;
 
 const AI = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -339,24 +341,17 @@ export const reviewResume = async (req, res) => {
       });
     }
 
-    // ✅ Load pdf-parse dynamically
-    const pdfModule = await import("pdf-parse");
+    // ✅ Read PDF file
+    const dataBuffer = fs.readFileSync(resume.path);
+    const loadingTask = getDocument({ data: dataBuffer });
+    const pdfDoc = await loadingTask.promise;
 
     let pdfText = "";
-    const dataBuffer = fs.readFileSync(resume.path);
-
-    if (typeof pdfModule.default === "function") {
-      // old CommonJS function export
-      const pdf = pdfModule.default;
-      const data = await pdf(dataBuffer);
-      pdfText = data.text;
-    } else if (typeof pdfModule.PDFParse === "function") {
-      // new ESM class export
-      const { PDFParse } = pdfModule;
-      const parser = new PDFParse({ data: dataBuffer }); // pass buffer in constructor
-      pdfText = parser.text; // ✅ access text directly
-    } else {
-      throw new Error("Unsupported pdf-parse export format");
+    for (let i = 1; i <= pdfDoc.numPages; i++) {
+      const page = await pdfDoc.getPage(i);
+      const content = await page.getTextContent();
+      const pageText = content.items.map((item) => item.str).join(" ");
+      pdfText += pageText + "\n";
     }
 
     // Prepare AI prompt
