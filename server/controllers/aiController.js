@@ -5,7 +5,7 @@ import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import FormData from "form-data";
 import fs from "fs";
-import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
+import pdf from "pdf-parse/lib/pdf-parse.js";
 
 const AI = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -341,22 +341,9 @@ export const reviewResume = async (req, res) => {
     }
 
     const dataBuffer = fs.readFileSync(resume.path);
+    const pdfData = await pdf(dataBuffer);
 
-    // ✅ Disable worker for Node/Serverless
-    const loadingTask = pdfjsLib.getDocument({
-      data: dataBuffer,
-      disableWorker: true,
-    });
-    const pdfDoc = await loadingTask.promise;
-
-    let pdfText = "";
-    for (let i = 1; i <= pdfDoc.numPages; i++) {
-      const page = await pdfDoc.getPage(i);
-      const content = await page.getTextContent();
-      pdfText += content.items.map((item) => item.str).join(" ") + "\n";
-    }
-
-    const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume content:\n\n${pdfText}`;
+    const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume content:\n\n${pdfData.text}`;
 
     const response = await AI.chat.completions.create({
       model: "gemini-2.0-flash",
