@@ -5,7 +5,6 @@ import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import FormData from "form-data";
 import fs from "fs";
-import { PDFParse } from "pdf-parse";
 
 const AI = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -336,37 +335,48 @@ export const reviewResume = async (req, res) => {
     if (resume.size > 5 * 1024 * 1024) {
       return res.json({
         success: false,
-        message: "Resume file size exceeds allowed size(5MB).",
+        message: "Resume file size exceeds allowed size (5MB).",
       });
     }
 
-    // ✅ Read PDF file and parse
-    const dataBuffer = fs.readFileSync(resume.path);
-    const pdfData = new PDFParse(dataBuffer);
+    // ✅ Load pdf-parse dynamically
+    const pdfModule = await import("pdf-parse");
 
-    const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume content:\n\n${pdfData.text}`;
+    let pdfText = "";
+    const dataBuffer = fs.readFileSync(resume.path);
+
+    if (typeof pdfModule.default === "function") {
+      // old CommonJS function export
+      const pdf = pdfModule.default;
+      const data = await pdf(dataBuffer);
+      pdfText = data.text;
+    } else if (typeof pdfModule.PDFParse === "function") {
+      // new ESM class export
+      const { PDFParse } = pdfModule;
+      const parser = new PDFParse({ data: dataBuffer }); // pass buffer in constructor
+      pdfText = parser.text; // ✅ access text directly
+    } else {
+      throw new Error("Unsupported pdf-parse export format");
+    }
+
+    // Prepare AI prompt
+    const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume content:\n\n${pdfText}`;
 
     const response = await AI.chat.completions.create({
       model: "gemini-2.0-flash",
-      messages: [
-        {
-          role: "user",
-          content: prompt,
-        },
-      ],
+      messages: [{ role: "user", content: prompt }],
       temperature: 0.7,
       max_tokens: 1000,
     });
 
     const content = response.choices[0].message.content;
 
-    // Save record in DB
+    // Save to DB
     await sql`
       INSERT INTO creations (user_id, prompt, content, type)
       VALUES (${userId}, 'Review the uploaded resume', ${content}, 'resume-review')
     `;
 
-    // Return success response
     return res.json({
       success: true,
       content,
@@ -376,6 +386,7 @@ export const reviewResume = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: "Something went wrong while reviewing the resume.",
+      details: error.message,
     });
   }
 };

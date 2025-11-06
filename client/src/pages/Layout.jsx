@@ -17,7 +17,7 @@ const Layout = () => {
           src={assets.logo}
           onClick={() => navigate("/")}
           alt="logo"
-          className="cursor-pointer w-32 sm:w-44"
+          className="cursor-pointer w-22 sm:w-34"
         />
         {sidebar ? (
           <X

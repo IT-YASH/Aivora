@@ -1,4 +1,3 @@
-import React from "react";
 import { assets } from "../assets/assets";
 import { useNavigate } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
@@ -14,7 +13,7 @@ const Navbar = () => {
       <img
         src={assets.logo}
         alt="logo"
-        className="w-32 sm:w-44 cursor-pointer"
+        className="w-22 sm:w-34 cursor-pointer"
         onClick={() => navigate("/")}
       />
       {user ? (
