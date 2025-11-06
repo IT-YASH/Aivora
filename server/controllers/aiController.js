@@ -6,9 +6,6 @@ import { v2 as cloudinary } from "cloudinary";
 import FormData from "form-data";
 import fs from "fs";
 import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
-const { getDocument } = pdfjsLib;
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = null;
 
 const AI = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -344,7 +341,12 @@ export const reviewResume = async (req, res) => {
     }
 
     const dataBuffer = fs.readFileSync(resume.path);
-    const loadingTask = pdfjsLib.getDocument({ data: dataBuffer });
+
+    // ✅ Disable worker for Node/Serverless
+    const loadingTask = pdfjsLib.getDocument({
+      data: dataBuffer,
+      disableWorker: true,
+    });
     const pdfDoc = await loadingTask.promise;
 
     let pdfText = "";
@@ -354,7 +356,6 @@ export const reviewResume = async (req, res) => {
       pdfText += content.items.map((item) => item.str).join(" ") + "\n";
     }
 
-    // AI prompt
     const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume content:\n\n${pdfText}`;
 
     const response = await AI.chat.completions.create({
@@ -371,10 +372,7 @@ export const reviewResume = async (req, res) => {
       VALUES (${userId}, 'Review the uploaded resume', ${content}, 'resume-review')
     `;
 
-    return res.json({
-      success: true,
-      content,
-    });
+    return res.json({ success: true, content });
   } catch (error) {
     console.error("Error reviewing resume:", error.response?.data || error);
     return res.status(500).json({
