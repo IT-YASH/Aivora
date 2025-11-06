@@ -1,16 +1,30 @@
-# React + Vite
+# AI SaaS Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**AI SaaS Frontend** is the client-side application for your AI-powered SaaS platform. Built using **React.js** and **Tailwind CSS**, it provides users with an intuitive interface to interact with AI features such as article generation, image generation, background/object removal, and resume review.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🌟 Key Features
 
-## React Compiler
+- **Dashboard:** Central hub for accessing all AI tools and features.  
+- **Write Article:** Generate AI-based articles in a few clicks.  
+- **Blog Titles:** Generate creative blog titles automatically.  
+- **Generate Images:** AI-powered image generation based on prompts.  
+- **Remove Background:** Remove image backgrounds effortlessly.  
+- **Remove Object:** Remove unwanted objects from images.  
+- **Resume Review:** Upload and get AI-generated constructive feedback.  
+- **Community:** Explore shared content and AI creations from other users.  
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+---
 
-## Expanding the ESLint configuration
+## 💻 Technology Stack
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React.js** – Frontend framework for building interactive UI  
+- **React Router DOM** – Client-side routing and nested routes  
+- **Tailwind CSS** – Modern CSS framework for styling  
+- **Clerk React** – Authentication and user management  
+- **Axios** – API calls to backend endpoints  
+- **React Hot Toast** – Notifications and feedback  
+- **React Markdown** – Render Markdown content  
+- **Lucide React** – Icon library  
+
