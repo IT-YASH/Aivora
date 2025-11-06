@@ -5,8 +5,10 @@ import axios from "axios";
 import { v2 as cloudinary } from "cloudinary";
 import FormData from "form-data";
 import fs from "fs";
-import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js"; 
+import pdfjsLib from "pdfjs-dist/legacy/build/pdf.js";
 const { getDocument } = pdfjsLib;
+
+pdfjsLib.GlobalWorkerOptions.workerSrc = null;
 
 const AI = new OpenAI({
   apiKey: process.env.GEMINI_API_KEY,
@@ -341,20 +343,18 @@ export const reviewResume = async (req, res) => {
       });
     }
 
-    // ✅ Read PDF file
     const dataBuffer = fs.readFileSync(resume.path);
-    const loadingTask = getDocument({ data: dataBuffer });
+    const loadingTask = pdfjsLib.getDocument({ data: dataBuffer });
     const pdfDoc = await loadingTask.promise;
 
     let pdfText = "";
     for (let i = 1; i <= pdfDoc.numPages; i++) {
       const page = await pdfDoc.getPage(i);
       const content = await page.getTextContent();
-      const pageText = content.items.map((item) => item.str).join(" ");
-      pdfText += pageText + "\n";
+      pdfText += content.items.map((item) => item.str).join(" ") + "\n";
     }
 
-    // Prepare AI prompt
+    // AI prompt
     const prompt = `Review the following resume and provide constructive feedback on its strengths, weaknesses, and areas for improvement. Resume content:\n\n${pdfText}`;
 
     const response = await AI.chat.completions.create({
@@ -366,7 +366,6 @@ export const reviewResume = async (req, res) => {
 
     const content = response.choices[0].message.content;
 
-    // Save to DB
     await sql`
       INSERT INTO creations (user_id, prompt, content, type)
       VALUES (${userId}, 'Review the uploaded resume', ${content}, 'resume-review')
