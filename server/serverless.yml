@@ -6,6 +6,7 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: us-east-1
+  timeout: 30
   environment:
     DATABASE_URL: ${env:DATABASE_URL}
     CLERK_SECRET_KEY: ${env:CLERK_SECRET_KEY}
@@ -20,6 +21,7 @@ provider:
 functions:
   api:
     handler: handler.handler
+    timeout: 30
     events:
       - httpApi: "*"
 
