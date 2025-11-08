@@ -29,9 +29,9 @@ const Sidebar = ({ sidebar, setSidebar }) => {
 
   return (
     <div
-      className={`w-60 bg-white border-r border-gray-200 flex flex-col justify-between items-center max-sm:absolute top-14 bottom-0 ${
-        sidebar ? "translate-x-0" : "max-sm:translate-x-full"
-      } transition-all duration-300 ease-in-out`}
+      className={`w-60 bg-white border-r border-gray-200 flex flex-col justify-between items-center fixed sm:static top-14 bottom-0 z-50 transform transition-transform duration-300 ease-in-out ${
+        sidebar ? "translate-x-0" : "-translate-x-full sm:translate-x-0"
+      }`}
     >
       <div className="my-6 w-full text-center">
         <img
@@ -81,8 +81,7 @@ const Sidebar = ({ sidebar, setSidebar }) => {
             <p className="text-xs text-gray-500">
               <Protect plan="premium" fallback="free">
                 Premium
-              </Protect>
-              {" "}
+              </Protect>{" "}
               Plan
             </p>
           </div>

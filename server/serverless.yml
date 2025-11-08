@@ -1,0 +1,41 @@
+org: aivora
+app: aivora-server
+service: aivora-backend
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: us-east-1
+  environment:
+    DATABASE_URL: ${env:DATABASE_URL}
+    CLERK_SECRET_KEY: ${env:CLERK_SECRET_KEY}
+    CLERK_PUBLISHABLE_KEY: ${env:CLERK_PUBLISHABLE_KEY}
+    CLOUDINARY_API_KEY: ${env:CLOUDINARY_API_KEY}
+    CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET}
+    CLOUDINARY_CLOUD_NAME: ${env:CLOUDINARY_CLOUD_NAME}
+    GEMINI_API_KEY: ${env:GEMINI_API_KEY}
+    CLIPDROP_API_KEY: ${env:CLIPDROP_API_KEY}
+    IS_LOCAL: false
+
+functions:
+  api:
+    handler: handler.handler
+    events:
+      - httpApi: "*"
+
+plugins:
+  - serverless-dotenv-plugin
+
+package:
+  patterns:
+    - "server.js"
+    - "routes/**"
+    - "controllers/**"
+    - "config/**"
+    - "middleware/**"
+    - "node_modules/**"
+    - "handler.js"
+    - "!**/.env"
+    - "!**/.gitignore"
+    - "!**/.serverless/**"
+    - "!**/node_modules/aws-sdk/**"

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useAuth, useUser } from "@clerk/clerk-react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Layout from "./pages/Layout";
@@ -13,12 +14,27 @@ import BlogTiltles from "./pages/BlockTiltles";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
+  const { getToken } = useAuth();
+  const { user } = useUser();
+
+  useEffect(() => {
+    const fetchToken = async () => {
+      try {
+        const token = await getToken();
+        console.log("🔑 Clerk JWT Token:", token);
+        console.log("🙍 User Info:", user);
+      } catch (err) {
+        console.error("Failed to get Clerk token:", err);
+      }
+    };
+    fetchToken();
+  }, [getToken, user]);
   return (
     <div>
       <Toaster
         position="top-right"
         toastOptions={{
-          duration: 5000, 
+          duration: 5000,
           style: {
             borderRadius: "10px",
             background: "#333",

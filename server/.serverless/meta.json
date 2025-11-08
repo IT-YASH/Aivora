@@ -1,0 +1,988 @@
+{
+  "C:\\Users\\YashPatel\\Desktop\\timepass\\AISaas\\server\\serverless.yml": {
+    "versionFramework": "4.23.0",
+    "servicePath": "C:\\Users\\YashPatel\\Desktop\\timepass\\AISaas\\server\\serverless.yml",
+    "serviceConfigFileName": "serverless.yml",
+    "service": {
+      "org": "aivora",
+      "app": "aivora-server",
+      "service": "aivora-backend",
+      "provider": {
+        "name": "aws",
+        "runtime": "nodejs20.x",
+        "region": "us-east-1",
+        "environment": {
+          "DATABASE_URL": "postgresql://neondb_owner:npg_FxLnaDYK91RI@ep-square-bread-a4catyav-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+          "CLERK_SECRET_KEY": "<REDACTED>",
+          "CLERK_PUBLISHABLE_KEY": "pk_test_c3VpdGFibGUtYmx1ZWJpcmQtNjYuY2xlcmsuYWNjb3VudHMuZGV2JA",
+          "CLOUDINARY_API_KEY": "<REDACTED>",
+          "CLOUDINARY_API_SECRET": "<REDACTED>",
+          "CLOUDINARY_CLOUD_NAME": "decpsfn77",
+          "GEMINI_API_KEY": "<REDACTED>",
+          "CLIPDROP_API_KEY": "<REDACTED>",
+          "IS_LOCAL": "true"
+        },
+        "stage": "dev",
+        "versionFunctions": true,
+        "compiledCloudFormationTemplate": {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Description": "The AWS CloudFormation template for this Serverless application",
+          "Resources": {
+            "ApiLogGroup": {
+              "Type": "AWS::Logs::LogGroup",
+              "Properties": {
+                "LogGroupName": "/aws/lambda/aivora-backend-dev-api"
+              }
+            },
+            "IamRoleLambdaExecution": {
+              "Type": "AWS::IAM::Role",
+              "Properties": {
+                "AssumeRolePolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Principal": {
+                        "Service": [
+                          "lambda.amazonaws.com"
+                        ]
+                      },
+                      "Action": [
+                        "sts:AssumeRole"
+                      ]
+                    }
+                  ]
+                },
+                "Policies": [
+                  {
+                    "PolicyName": {
+                      "Fn::Join": [
+                        "-",
+                        [
+                          "aivora-backend",
+                          "dev",
+                          "lambda"
+                        ]
+                      ]
+                    },
+                    "PolicyDocument": {
+                      "Version": "2012-10-17",
+                      "Statement": [
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:CreateLogStream",
+                            "logs:CreateLogGroup",
+                            "logs:TagResource"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/aivora-backend-dev*:*"
+                            }
+                          ]
+                        },
+                        {
+                          "Effect": "Allow",
+                          "Action": [
+                            "logs:PutLogEvents"
+                          ],
+                          "Resource": [
+                            {
+                              "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/aivora-backend-dev*:*:*"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  }
+                ],
+                "Path": "/",
+                "RoleName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "aivora-backend",
+                      "dev",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      "lambdaRole"
+                    ]
+                  ]
+                }
+              }
+            },
+            "ApiLambdaFunction": {
+              "Type": "AWS::Lambda::Function",
+              "Properties": {
+                "Code": {
+                  "S3Bucket": "serverless-framework-deployments-us-east-1-34257bd6-0cc8",
+                  "S3Key": "serverless/aivora-backend/dev/1762584122877-2025-11-08T06:42:02.877Z/aivora-backend.zip"
+                },
+                "Handler": "handler.handler",
+                "Runtime": "nodejs20.x",
+                "FunctionName": "aivora-backend-dev-api",
+                "MemorySize": 1024,
+                "Timeout": 6,
+                "Environment": {
+                  "Variables": {
+                    "DATABASE_URL": "postgresql://neondb_owner:npg_FxLnaDYK91RI@ep-square-bread-a4catyav-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+                    "CLERK_SECRET_KEY": "<REDACTED>",
+                    "CLERK_PUBLISHABLE_KEY": "pk_test_c3VpdGFibGUtYmx1ZWJpcmQtNjYuY2xlcmsuYWNjb3VudHMuZGV2JA",
+                    "CLOUDINARY_API_KEY": "<REDACTED>",
+                    "CLOUDINARY_API_SECRET": "<REDACTED>",
+                    "CLOUDINARY_CLOUD_NAME": "decpsfn77",
+                    "GEMINI_API_KEY": "<REDACTED>",
+                    "CLIPDROP_API_KEY": "<REDACTED>",
+                    "IS_LOCAL": "true"
+                  }
+                },
+                "Role": {
+                  "Fn::GetAtt": [
+                    "IamRoleLambdaExecution",
+                    "Arn"
+                  ]
+                }
+              },
+              "DependsOn": [
+                "ApiLogGroup"
+              ]
+            },
+            "ApiLambdaVersionfk2b9EQ9Sed9MROoNz0Zmx6Kf5LRrrxhIFR1Kg5hyg": {
+              "Type": "AWS::Lambda::Version",
+              "DeletionPolicy": "Retain",
+              "Properties": {
+                "FunctionName": {
+                  "Ref": "ApiLambdaFunction"
+                },
+                "CodeSha256": "YsxS6tf4v+XhH4wzxcLip/Ma93VQyrpjIXm+Wr5+t0k="
+              }
+            },
+            "HttpApi": {
+              "Type": "AWS::ApiGatewayV2::Api",
+              "Properties": {
+                "Name": "dev-aivora-backend",
+                "ProtocolType": "HTTP"
+              }
+            },
+            "HttpApiStage": {
+              "Type": "AWS::ApiGatewayV2::Stage",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "StageName": "$default",
+                "AutoDeploy": true,
+                "DefaultRouteSettings": {
+                  "DetailedMetricsEnabled": false
+                }
+              }
+            },
+            "ApiLambdaPermissionHttpApi": {
+              "Type": "AWS::Lambda::Permission",
+              "Properties": {
+                "FunctionName": {
+                  "Fn::GetAtt": [
+                    "ApiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "Action": "lambda:InvokeFunction",
+                "Principal": "apigateway.amazonaws.com",
+                "SourceArn": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":execute-api:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":",
+                      {
+                        "Ref": "AWS::AccountId"
+                      },
+                      ":",
+                      {
+                        "Ref": "HttpApi"
+                      },
+                      "/*"
+                    ]
+                  ]
+                }
+              }
+            },
+            "HttpApiIntegrationApi": {
+              "Type": "AWS::ApiGatewayV2::Integration",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "IntegrationType": "AWS_PROXY",
+                "IntegrationUri": {
+                  "Fn::GetAtt": [
+                    "ApiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "PayloadFormatVersion": "2.0",
+                "TimeoutInMillis": 30000
+              }
+            },
+            "HttpApiRouteDefault": {
+              "Type": "AWS::ApiGatewayV2::Route",
+              "Properties": {
+                "ApiId": {
+                  "Ref": "HttpApi"
+                },
+                "RouteKey": "$default",
+                "Target": {
+                  "Fn::Join": [
+                    "/",
+                    [
+                      "integrations",
+                      {
+                        "Ref": "HttpApiIntegrationApi"
+                      }
+                    ]
+                  ]
+                }
+              },
+              "DependsOn": "HttpApiIntegrationApi"
+            }
+          },
+          "Outputs": {
+            "ServerlessDeploymentBucketName": {
+              "Value": "serverless-framework-deployments-us-east-1-34257bd6-0cc8",
+              "Export": {
+                "Name": "sls-aivora-backend-dev-ServerlessDeploymentBucketName"
+              }
+            },
+            "ApiLambdaFunctionQualifiedArn": {
+              "Description": "Current Lambda function version",
+              "Value": {
+                "Ref": "ApiLambdaVersionfk2b9EQ9Sed9MROoNz0Zmx6Kf5LRrrxhIFR1Kg5hyg"
+              },
+              "Export": {
+                "Name": "sls-aivora-backend-dev-ApiLambdaFunctionQualifiedArn"
+              }
+            },
+            "HttpApiId": {
+              "Description": "Id of the HTTP API",
+              "Value": {
+                "Ref": "HttpApi"
+              },
+              "Export": {
+                "Name": "sls-aivora-backend-dev-HttpApiId"
+              }
+            },
+            "HttpApiUrl": {
+              "Description": "URL of the HTTP API",
+              "Value": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "https://",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    ".execute-api.",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ".",
+                    {
+                      "Ref": "AWS::URLSuffix"
+                    }
+                  ]
+                ]
+              },
+              "Export": {
+                "Name": "sls-aivora-backend-dev-HttpApiUrl"
+              }
+            }
+          }
+        },
+        "vpc": {}
+      },
+      "functions": {
+        "api": {
+          "handler": "handler.handler",
+          "events": [
+            {
+              "httpApi": "*",
+              "resolvedMethod": "ANY"
+            }
+          ],
+          "name": "aivora-backend-dev-api",
+          "package": {},
+          "memory": 1024,
+          "timeout": 6,
+          "runtime": "nodejs20.x",
+          "vpc": {},
+          "versionLogicalId": "ApiLambdaVersionfk2b9EQ9Sed9MROoNz0Zmx6Kf5LRrrxhIFR1Kg5hyg"
+        }
+      },
+      "plugins": [
+        "serverless-dotenv-plugin"
+      ],
+      "package": {
+        "patterns": [
+          "server.js",
+          "routes/**",
+          "controllers/**",
+          "config/**",
+          "middleware/**",
+          "node_modules/**",
+          "handler.js",
+          "!**/.env",
+          "!**/.gitignore",
+          "!**/.serverless/**",
+          "!**/node_modules/aws-sdk/**"
+        ],
+        "artifactsS3KeyDirname": "serverless/aivora-backend/dev/code-artifacts",
+        "deploymentBucket": "serverless-framework-deployments-us-east-1-34257bd6-0cc8",
+        "artifact": "C:\\Users\\YashPatel\\Desktop\\timepass\\AISaas\\server\\.serverless\\aivora-backend.zip",
+        "artifactDirectoryName": "serverless/aivora-backend/dev/1762584122877-2025-11-08T06:42:02.877Z"
+      }
+    },
+    "provider": {
+      "name": "aws",
+      "runtime": "nodejs20.x",
+      "region": "us-east-1",
+      "environment": {
+        "DATABASE_URL": "postgresql://neondb_owner:npg_FxLnaDYK91RI@ep-square-bread-a4catyav-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+        "CLERK_SECRET_KEY": "<REDACTED>",
+        "CLERK_PUBLISHABLE_KEY": "pk_test_c3VpdGFibGUtYmx1ZWJpcmQtNjYuY2xlcmsuYWNjb3VudHMuZGV2JA",
+        "CLOUDINARY_API_KEY": "<REDACTED>",
+        "CLOUDINARY_API_SECRET": "<REDACTED>",
+        "CLOUDINARY_CLOUD_NAME": "decpsfn77",
+        "GEMINI_API_KEY": "<REDACTED>",
+        "CLIPDROP_API_KEY": "<REDACTED>",
+        "IS_LOCAL": "true"
+      },
+      "stage": "dev",
+      "versionFunctions": true,
+      "compiledCloudFormationTemplate": {
+        "AWSTemplateFormatVersion": "2010-09-09",
+        "Description": "The AWS CloudFormation template for this Serverless application",
+        "Resources": {
+          "ApiLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/aivora-backend-dev-api"
+            }
+          },
+          "IamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "aivora-backend",
+                        "dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:CreateLogGroup",
+                          "logs:TagResource"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/aivora-backend-dev*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/aivora-backend-dev*:*:*"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "aivora-backend",
+                    "dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "lambdaRole"
+                  ]
+                ]
+              }
+            }
+          },
+          "ApiLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": "serverless-framework-deployments-us-east-1-34257bd6-0cc8",
+                "S3Key": "serverless/aivora-backend/dev/1762584122877-2025-11-08T06:42:02.877Z/aivora-backend.zip"
+              },
+              "Handler": "handler.handler",
+              "Runtime": "nodejs20.x",
+              "FunctionName": "aivora-backend-dev-api",
+              "MemorySize": 1024,
+              "Timeout": 6,
+              "Environment": {
+                "Variables": {
+                  "DATABASE_URL": "postgresql://neondb_owner:npg_FxLnaDYK91RI@ep-square-bread-a4catyav-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+                  "CLERK_SECRET_KEY": "<REDACTED>",
+                  "CLERK_PUBLISHABLE_KEY": "pk_test_c3VpdGFibGUtYmx1ZWJpcmQtNjYuY2xlcmsuYWNjb3VudHMuZGV2JA",
+                  "CLOUDINARY_API_KEY": "<REDACTED>",
+                  "CLOUDINARY_API_SECRET": "<REDACTED>",
+                  "CLOUDINARY_CLOUD_NAME": "decpsfn77",
+                  "GEMINI_API_KEY": "<REDACTED>",
+                  "CLIPDROP_API_KEY": "<REDACTED>",
+                  "IS_LOCAL": "true"
+                }
+              },
+              "Role": {
+                "Fn::GetAtt": [
+                  "IamRoleLambdaExecution",
+                  "Arn"
+                ]
+              }
+            },
+            "DependsOn": [
+              "ApiLogGroup"
+            ]
+          },
+          "ApiLambdaVersionfk2b9EQ9Sed9MROoNz0Zmx6Kf5LRrrxhIFR1Kg5hyg": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "ApiLambdaFunction"
+              },
+              "CodeSha256": "YsxS6tf4v+XhH4wzxcLip/Ma93VQyrpjIXm+Wr5+t0k="
+            }
+          },
+          "HttpApi": {
+            "Type": "AWS::ApiGatewayV2::Api",
+            "Properties": {
+              "Name": "dev-aivora-backend",
+              "ProtocolType": "HTTP"
+            }
+          },
+          "HttpApiStage": {
+            "Type": "AWS::ApiGatewayV2::Stage",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "StageName": "$default",
+              "AutoDeploy": true,
+              "DefaultRouteSettings": {
+                "DetailedMetricsEnabled": false
+              }
+            }
+          },
+          "ApiLambdaPermissionHttpApi": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "ApiLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "HttpApi"
+                    },
+                    "/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "HttpApiIntegrationApi": {
+            "Type": "AWS::ApiGatewayV2::Integration",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "IntegrationType": "AWS_PROXY",
+              "IntegrationUri": {
+                "Fn::GetAtt": [
+                  "ApiLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "PayloadFormatVersion": "2.0",
+              "TimeoutInMillis": 30000
+            }
+          },
+          "HttpApiRouteDefault": {
+            "Type": "AWS::ApiGatewayV2::Route",
+            "Properties": {
+              "ApiId": {
+                "Ref": "HttpApi"
+              },
+              "RouteKey": "$default",
+              "Target": {
+                "Fn::Join": [
+                  "/",
+                  [
+                    "integrations",
+                    {
+                      "Ref": "HttpApiIntegrationApi"
+                    }
+                  ]
+                ]
+              }
+            },
+            "DependsOn": "HttpApiIntegrationApi"
+          }
+        },
+        "Outputs": {
+          "ServerlessDeploymentBucketName": {
+            "Value": "serverless-framework-deployments-us-east-1-34257bd6-0cc8",
+            "Export": {
+              "Name": "sls-aivora-backend-dev-ServerlessDeploymentBucketName"
+            }
+          },
+          "ApiLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "ApiLambdaVersionfk2b9EQ9Sed9MROoNz0Zmx6Kf5LRrrxhIFR1Kg5hyg"
+            },
+            "Export": {
+              "Name": "sls-aivora-backend-dev-ApiLambdaFunctionQualifiedArn"
+            }
+          },
+          "HttpApiId": {
+            "Description": "Id of the HTTP API",
+            "Value": {
+              "Ref": "HttpApi"
+            },
+            "Export": {
+              "Name": "sls-aivora-backend-dev-HttpApiId"
+            }
+          },
+          "HttpApiUrl": {
+            "Description": "URL of the HTTP API",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "HttpApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  }
+                ]
+              ]
+            },
+            "Export": {
+              "Name": "sls-aivora-backend-dev-HttpApiUrl"
+            }
+          }
+        }
+      },
+      "vpc": {}
+    },
+    "dashboard": {
+      "isEnabledForService": true,
+      "requiredAuthentication": false,
+      "orgFeaturesInUse": {
+        "providers": false,
+        "monitoring": false
+      },
+      "orgObservabilityIntegrations": null,
+      "serviceAppId": "RWjqd5Bd2yrt2cP8Xj",
+      "serviceProvider": null,
+      "instanceParameters": null
+    },
+    "serviceRawFile": "org: aivora\napp: aivora-server\nservice: aivora-backend\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: us-east-1\n  environment:\n    DATABASE_URL: ${env:DATABASE_URL}\n    CLERK_SECRET_KEY: ${env:CLERK_SECRET_KEY}\n    CLERK_PUBLISHABLE_KEY: ${env:CLERK_PUBLISHABLE_KEY}\n    CLOUDINARY_API_KEY: ${env:CLOUDINARY_API_KEY}\n    CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET}\n    CLOUDINARY_CLOUD_NAME: ${env:CLOUDINARY_CLOUD_NAME}\n    GEMINI_API_KEY: ${env:GEMINI_API_KEY}\n    CLIPDROP_API_KEY: ${env:CLIPDROP_API_KEY}\n    IS_LOCAL: false\n\nfunctions:\n  api:\n    handler: handler.handler\n    events:\n      - httpApi: \"*\"\n\nplugins:\n  - serverless-dotenv-plugin\n\npackage:\n  patterns:\n    - \"server.js\"\n    - \"routes/**\"\n    - \"controllers/**\"\n    - \"config/**\"\n    - \"middleware/**\"\n    - \"node_modules/**\"\n    - \"handler.js\"\n    - \"!**/.env\"\n    - \"!**/.gitignore\"\n    - \"!**/.serverless/**\"\n    - \"!**/node_modules/aws-sdk/**\"\n",
+    "command": [
+      "deploy"
+    ],
+    "options": {},
+    "orgId": "3872e790-a2f5-4842-820d-62b13b98d8a4",
+    "orgName": "aivora",
+    "userId": "8nLqkRgsDzGRWH1PRC",
+    "userName": "aivora",
+    "serviceProviderAwsAccountId": "513371322389",
+    "serviceProviderAwsCfStackName": "aivora-backend-dev",
+    "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:513371322389:stack/aivora-backend-dev/a7961360-bc63-11f0-b38a-0e543505aab1",
+    "serviceProviderAwsCfStackCreated": "2025-11-08T05:27:44.923Z",
+    "serviceProviderAwsCfStackUpdated": "2025-11-08T06:36:00.951Z",
+    "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
+    "serviceProviderAwsCfStackOutputs": [
+      {
+        "OutputKey": "ApiLambdaFunctionQualifiedArn",
+        "OutputValue": "arn:aws:lambda:us-east-1:513371322389:function:aivora-backend-dev-api:10",
+        "Description": "Current Lambda function version",
+        "ExportName": "sls-aivora-backend-dev-ApiLambdaFunctionQualifiedArn"
+      },
+      {
+        "OutputKey": "HttpApiId",
+        "OutputValue": "7d7db29lw1",
+        "Description": "Id of the HTTP API",
+        "ExportName": "sls-aivora-backend-dev-HttpApiId"
+      },
+      {
+        "OutputKey": "ServerlessDeploymentBucketName",
+        "OutputValue": "serverless-framework-deployments-us-east-1-34257bd6-0cc8",
+        "ExportName": "sls-aivora-backend-dev-ServerlessDeploymentBucketName"
+      },
+      {
+        "OutputKey": "HttpApiUrl",
+        "OutputValue": "https://7d7db29lw1.execute-api.us-east-1.amazonaws.com",
+        "Description": "URL of the HTTP API",
+        "ExportName": "sls-aivora-backend-dev-HttpApiUrl"
+      }
+    ],
+    "compiledCloudFormationTemplate": {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "The AWS CloudFormation template for this Serverless application",
+      "Resources": {
+        "ApiLogGroup": {
+          "Type": "AWS::Logs::LogGroup",
+          "Properties": {
+            "LogGroupName": "/aws/lambda/aivora-backend-dev-api"
+          }
+        },
+        "IamRoleLambdaExecution": {
+          "Type": "AWS::IAM::Role",
+          "Properties": {
+            "AssumeRolePolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": [
+                      "lambda.amazonaws.com"
+                    ]
+                  },
+                  "Action": [
+                    "sts:AssumeRole"
+                  ]
+                }
+              ]
+            },
+            "Policies": [
+              {
+                "PolicyName": {
+                  "Fn::Join": [
+                    "-",
+                    [
+                      "aivora-backend",
+                      "dev",
+                      "lambda"
+                    ]
+                  ]
+                },
+                "PolicyDocument": {
+                  "Version": "2012-10-17",
+                  "Statement": [
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:CreateLogStream",
+                        "logs:CreateLogGroup",
+                        "logs:TagResource"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/aivora-backend-dev*:*"
+                        }
+                      ]
+                    },
+                    {
+                      "Effect": "Allow",
+                      "Action": [
+                        "logs:PutLogEvents"
+                      ],
+                      "Resource": [
+                        {
+                          "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/aivora-backend-dev*:*:*"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              }
+            ],
+            "Path": "/",
+            "RoleName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "aivora-backend",
+                  "dev",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  "lambdaRole"
+                ]
+              ]
+            }
+          }
+        },
+        "ApiLambdaFunction": {
+          "Type": "AWS::Lambda::Function",
+          "Properties": {
+            "Code": {
+              "S3Bucket": "serverless-framework-deployments-us-east-1-34257bd6-0cc8",
+              "S3Key": "serverless/aivora-backend/dev/1762584122877-2025-11-08T06:42:02.877Z/aivora-backend.zip"
+            },
+            "Handler": "handler.handler",
+            "Runtime": "nodejs20.x",
+            "FunctionName": "aivora-backend-dev-api",
+            "MemorySize": 1024,
+            "Timeout": 6,
+            "Environment": {
+              "Variables": {
+                "DATABASE_URL": "postgresql://neondb_owner:npg_FxLnaDYK91RI@ep-square-bread-a4catyav-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require",
+                "CLERK_SECRET_KEY": "<REDACTED>",
+                "CLERK_PUBLISHABLE_KEY": "pk_test_c3VpdGFibGUtYmx1ZWJpcmQtNjYuY2xlcmsuYWNjb3VudHMuZGV2JA",
+                "CLOUDINARY_API_KEY": "<REDACTED>",
+                "CLOUDINARY_API_SECRET": "<REDACTED>",
+                "CLOUDINARY_CLOUD_NAME": "decpsfn77",
+                "GEMINI_API_KEY": "<REDACTED>",
+                "CLIPDROP_API_KEY": "<REDACTED>",
+                "IS_LOCAL": "true"
+              }
+            },
+            "Role": {
+              "Fn::GetAtt": [
+                "IamRoleLambdaExecution",
+                "Arn"
+              ]
+            }
+          },
+          "DependsOn": [
+            "ApiLogGroup"
+          ]
+        },
+        "ApiLambdaVersionfk2b9EQ9Sed9MROoNz0Zmx6Kf5LRrrxhIFR1Kg5hyg": {
+          "Type": "AWS::Lambda::Version",
+          "DeletionPolicy": "Retain",
+          "Properties": {
+            "FunctionName": {
+              "Ref": "ApiLambdaFunction"
+            },
+            "CodeSha256": "YsxS6tf4v+XhH4wzxcLip/Ma93VQyrpjIXm+Wr5+t0k="
+          }
+        },
+        "HttpApi": {
+          "Type": "AWS::ApiGatewayV2::Api",
+          "Properties": {
+            "Name": "dev-aivora-backend",
+            "ProtocolType": "HTTP"
+          }
+        },
+        "HttpApiStage": {
+          "Type": "AWS::ApiGatewayV2::Stage",
+          "Properties": {
+            "ApiId": {
+              "Ref": "HttpApi"
+            },
+            "StageName": "$default",
+            "AutoDeploy": true,
+            "DefaultRouteSettings": {
+              "DetailedMetricsEnabled": false
+            }
+          }
+        },
+        "ApiLambdaPermissionHttpApi": {
+          "Type": "AWS::Lambda::Permission",
+          "Properties": {
+            "FunctionName": {
+              "Fn::GetAtt": [
+                "ApiLambdaFunction",
+                "Arn"
+              ]
+            },
+            "Action": "lambda:InvokeFunction",
+            "Principal": "apigateway.amazonaws.com",
+            "SourceArn": {
+              "Fn::Join": [
+                "",
+                [
+                  "arn:",
+                  {
+                    "Ref": "AWS::Partition"
+                  },
+                  ":execute-api:",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ":",
+                  {
+                    "Ref": "AWS::AccountId"
+                  },
+                  ":",
+                  {
+                    "Ref": "HttpApi"
+                  },
+                  "/*"
+                ]
+              ]
+            }
+          }
+        },
+        "HttpApiIntegrationApi": {
+          "Type": "AWS::ApiGatewayV2::Integration",
+          "Properties": {
+            "ApiId": {
+              "Ref": "HttpApi"
+            },
+            "IntegrationType": "AWS_PROXY",
+            "IntegrationUri": {
+              "Fn::GetAtt": [
+                "ApiLambdaFunction",
+                "Arn"
+              ]
+            },
+            "PayloadFormatVersion": "2.0",
+            "TimeoutInMillis": 30000
+          }
+        },
+        "HttpApiRouteDefault": {
+          "Type": "AWS::ApiGatewayV2::Route",
+          "Properties": {
+            "ApiId": {
+              "Ref": "HttpApi"
+            },
+            "RouteKey": "$default",
+            "Target": {
+              "Fn::Join": [
+                "/",
+                [
+                  "integrations",
+                  {
+                    "Ref": "HttpApiIntegrationApi"
+                  }
+                ]
+              ]
+            }
+          },
+          "DependsOn": "HttpApiIntegrationApi"
+        }
+      },
+      "Outputs": {
+        "ServerlessDeploymentBucketName": {
+          "Value": "serverless-framework-deployments-us-east-1-34257bd6-0cc8",
+          "Export": {
+            "Name": "sls-aivora-backend-dev-ServerlessDeploymentBucketName"
+          }
+        },
+        "ApiLambdaFunctionQualifiedArn": {
+          "Description": "Current Lambda function version",
+          "Value": {
+            "Ref": "ApiLambdaVersionfk2b9EQ9Sed9MROoNz0Zmx6Kf5LRrrxhIFR1Kg5hyg"
+          },
+          "Export": {
+            "Name": "sls-aivora-backend-dev-ApiLambdaFunctionQualifiedArn"
+          }
+        },
+        "HttpApiId": {
+          "Description": "Id of the HTTP API",
+          "Value": {
+            "Ref": "HttpApi"
+          },
+          "Export": {
+            "Name": "sls-aivora-backend-dev-HttpApiId"
+          }
+        },
+        "HttpApiUrl": {
+          "Description": "URL of the HTTP API",
+          "Value": {
+            "Fn::Join": [
+              "",
+              [
+                "https://",
+                {
+                  "Ref": "HttpApi"
+                },
+                ".execute-api.",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ".",
+                {
+                  "Ref": "AWS::URLSuffix"
+                }
+              ]
+            ]
+          },
+          "Export": {
+            "Name": "sls-aivora-backend-dev-HttpApiUrl"
+          }
+        }
+      }
+    }
+  }
+}

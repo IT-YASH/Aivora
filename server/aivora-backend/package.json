@@ -1,0 +1,18 @@
+{
+  "name": "aivora-backend",
+  "version": "1.0.0",
+  "description": "Serverless deployment for Aivora backend Express app",
+  "type": "module",
+  "main": "handler.js",
+  "scripts": {
+    "deploy": "serverless deploy",
+    "logs": "serverless logs -f api --tail"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "serverless-http": "^3.2.0"
+  },
+  "devDependencies": {
+    "serverless-dotenv-plugin": "^6.0.0"
+  }
+}
