@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Eraser, Sparkles } from "lucide-react";
+import { Eraser, Sparkles, Download } from "lucide-react";
 import toast from "react-hot-toast";
 import Markdown from "react-markdown";
 import axios from "axios";
@@ -9,11 +9,18 @@ axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const RemoveBackgorund = () => {
   const [input, setInput] = useState("");
-
+  const [preview, setPreview] = useState("");
   const [loading, setLoading] = useState(false);
   const [content, setContent] = useState("");
-
   const { getToken } = useAuth();
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setInput(file);
+    setPreview(URL.createObjectURL(file));
+  };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -38,6 +45,23 @@ const RemoveBackgorund = () => {
     }
     setLoading(false);
   };
+
+  const downloadImage = async (url) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "background-removed.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Image downloaded successfully!");
+    } catch (error) {
+      toast.error("Failed to download image");
+    }
+  };
+
   return (
     <div className="h-full flex overflow-y-scroll p-6 items-start flex-wrap gap-4 text-slate-700">
       <form
@@ -50,7 +74,7 @@ const RemoveBackgorund = () => {
         </div>
         <p className="mt-6 text-sm font-medium">Upload Image</p>
         <input
-          onChange={(e) => setInput(e.target.files[0])}
+          onChange={handleFileChange}
           type="file"
           accept="image/*"
           className="w-full text-gray-600 p-2 px-3 mt-2 outline-none text-sm rounded-md border border-gray-300"
@@ -60,6 +84,19 @@ const RemoveBackgorund = () => {
         <p className="text-xs text-gray-500 font-light mt-1">
           Supports JPG, PNG and other Image Formats
         </p>
+
+        {/* 🆕 Preview of uploaded image */}
+        {preview && (
+          <div className="mt-4">
+            <p className="text-sm mb-1 text-gray-500">Preview:</p>
+            <img
+              src={preview}
+              alt="Preview"
+              className="w-full h-auto rounded-lg border border-gray-200"
+            />
+          </div>
+        )}
+
         <button
           disabled={loading}
           className="w-full flex justify-center items-center gap-2 bg-linear-to-r from-[#F6AB41] to-[#FF4938] text-white px-4 py-2 mt-6 text-sm rounded-lg cursor-pointer"
@@ -90,8 +127,20 @@ const RemoveBackgorund = () => {
             </div>
           </div>
         ) : (
-          <div className="h-full mt-3">
-            <img src={content} alt="Image" className="w-full h-full " />
+          <div className="h-full mt-3 flex flex-col items-center">
+            <img
+              src={content}
+              alt="Processed"
+              className="w-full h-auto rounded-lg shadow-md"
+            />
+
+            <button
+              onClick={() => downloadImage(content)}
+              className="mt-4 w-full flex justify-center items-center gap-2 bg-[#FF4938] hover:bg-[#e73f2d] text-white px-4 py-2 text-sm rounded-md font-medium transition"
+            >
+              <Download className="w-4 h-4" />
+              <span>Download Image</span>
+            </button>
           </div>
         )}
       </div>

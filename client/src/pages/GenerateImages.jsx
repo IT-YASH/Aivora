@@ -50,6 +50,24 @@ const GenerateImages = () => {
     }
     setLoading(false);
   };
+
+  const downloadImage = async (url) => {
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = window.URL.createObjectURL(blob);
+      link.download = "generated-image.png";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success("Image downloaded successfully!");
+    } catch (error) {
+      console.error("Download failed:", error);
+      toast.error("Failed to download image");
+    }
+  };
+
   return (
     <div className="h-full flex overflow-y-scroll p-6 items-start flex-wrap gap-4 text-slate-700">
       <form
@@ -112,22 +130,34 @@ const GenerateImages = () => {
       </form>
 
       {/* Right Col */}
-      <div className="w-full max-w-lg p-4 bg-white rounded-lg flex  flex-col border border-gray-200 min-h-96">
+      <div className="w-full max-w-lg p-4 bg-white rounded-lg flex flex-col border border-gray-200 min-h-96">
         <div className="flex items-center gap-3">
           <Image className="w-5 h-5 text-[#8E37EB]" />
-          <h1 className="text-xl font-semibold">Generated Titles</h1>
+          <h1 className="text-xl font-semibold">Generated Image</h1>
         </div>
 
         {!content ? (
           <div className="flex-1 flex justify-center items-center">
             <div className="text-sm flex flex-col items-center gap-5 text-gray-400">
               <Image className="w-9 h-9" />
-              <p>Enter a topic and click "Generate title" to get started</p>
+              <p>Enter a topic and click "Generate Image" to get started</p>
             </div>
           </div>
         ) : (
-          <div className="h-full mt-3">
-            <img src={content} alt="Image" className="w-full h-full " />
+          <div className="flex flex-col items-center mt-3">
+            <img
+              src={content}
+              alt="Generated"
+              className="w-full h-auto rounded-lg shadow-md"
+            />
+
+            <button
+              onClick={() => downloadImage(content)}
+              className="mt-4 w-full flex justify-center items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 text-sm rounded-md font-medium transition-all"
+            >
+              <Image className="w-4 h-4" />
+              <span>Download Image</span>
+            </button>
           </div>
         )}
       </div>

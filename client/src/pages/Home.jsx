@@ -12,8 +12,8 @@ const Home = () => {
       <Navbar />
       <Hero />
       <AiTools />
-      <Testimonial />
       <Plan />
+      <Testimonial />
       <Footer />
     </>
   );
