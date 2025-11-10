@@ -1,7 +1,7 @@
 # AI SaaS Platform
 
 <p float="left">
-  <img src="./client/src/assets/Home.png" alt="HomePage" width="400" />
+  <img src="./client/src/assets/home.png" alt="HomePage" width="400" />
   <img src="./client/src/assets/Dashboard.png" alt="Dashboard" width="400" />
 </p>
 
