@@ -20,7 +20,7 @@
   <img src="./client/src/assets/community.png" alt="ReviewResume" width="400" />
 </p>
 <p float="center">
-  <img src="./client/src/assets/blogtitle.png.png" alt="blogtitle" width="400" />
+  <img src="./client/src/assets/blogtitle.png" alt="blogtitle" width="400" />
 </p>
 
 ---
