@@ -34,12 +34,14 @@ const Sidebar = ({ sidebar, setSidebar }) => {
       }`}
     >
       <div className="my-6 w-full text-center">
-        <img
-          src={user?.imageUrl}
-          className="w-16 h-16 rounded-full mx-auto object-cover"
-          alt="User Avatar"
-        />
-        <h1 className="mt-2 font-medium">{user?.fullName}</h1>
+        <div className="cursor-pointer" onClick={openUserProfile}>
+          <img
+            src={user?.imageUrl}
+            className="w-16 h-16 rounded-full mx-auto object-cover"
+            alt="User Avatar"
+          />
+          <h1 className="mt-2 font-medium">{user?.fullName}</h1>
+        </div>
 
         <div className="px-6 mt-5 text-sm text-gray-600 font-medium">
           {navItems.map((item, index) => (
