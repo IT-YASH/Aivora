@@ -62,6 +62,13 @@ The project is deployed on **Vercel (frontend)** and **serverless backend** for 
 - Multer for file uploads
 - pdf-parse for PDF parsing
 
+**Cloud Infrastructure:**
+AWS Lambda – Runs the Express backend as a serverless function (no need to manage servers).
+AWS API Gateway – Provides the public HTTPS endpoint for all backend API routes.
+AWS CloudWatch – Captures logs and monitors Lambda performance for debugging and analytics.
+Serverless Framework – Automates deployment of Lambda, API Gateway, and environment variables.
+Environment Management – Secrets and configuration handled securely via .env and Serverless plugin.
+
 ---
 
 ## ⚡ Features
@@ -76,6 +83,20 @@ The project is deployed on **Vercel (frontend)** and **serverless backend** for 
 - **Admin Features (Optional)** – Monitor users and creations
 
 ---
+
+## Test Accounts
+
+- These are demo accounts you can use to:
+
+| No. | Email               | Password (copy-paste) |
+| :-: | :------------------ | :-------------------- |
+| 1️⃣ | `test1@example.com` | `T3st!_DevAcct_2025`  |
+| 2️⃣ | `test2@example.com` | `T3st2!_Sandbox_OK`   |
+| 3️⃣ | `test3@example.com` | `Dev-T3st-User#001`   |
+
+- Log in to the platform
+- Try out AI tools (article, image, resume review, etc.)
+- Test premium features safely without creating new accounts
 
 ## Run Project
 
