@@ -104,11 +104,13 @@ const RemoveObject = () => {
         {preview && (
           <div className="mt-4">
             <p className="text-sm mb-1 text-gray-500">Preview:</p>
-            <img
-              src={preview}
-              alt="Preview"
-              className="w-full h-auto rounded-lg border border-gray-200"
-            />
+            <div className="w-full h-64 rounded-lg border border-gray-200 overflow-hidden flex items-center justify-center bg-gray-50">
+              <img
+                src={preview}
+                alt="Preview"
+                className="object-contain w-full h-full"
+              />
+            </div>
           </div>
         )}
 
@@ -157,16 +159,19 @@ const RemoveObject = () => {
           </div>
         ) : (
           <div className="flex flex-col items-center mt-3">
-            <img
-              src={content}
-              alt="Processed"
-              className="w-full h-auto rounded-lg shadow-md"
-            />
+            {/* ✅ Fixed Height Image Box */}
+            <div className="w-full h-64 rounded-lg shadow-md overflow-hidden flex items-center justify-center bg-gray-50">
+              <img
+                src={content}
+                alt="Processed"
+                className="object-contain w-full h-full"
+              />
+            </div>
 
             {/* ✅ Download Button */}
             <button
               onClick={() => downloadImage(content)}
-              className="mt-4 w-full flex justify-center items-center gap-2 bg-[#4A7AFF] hover:bg-[#3b68d4] text-white px-4 py-2 text-sm rounded-md font-medium transition-all"
+              className="mt-4 w-full flex justify-center items-center gap-2 bg-[#4A7AFF] hover:bg-[#3b68d4] text-white px-4 py-2 text-sm rounded-md font-medium transition-all duration-200 transform hover:scale-[1.02]"
             >
               <Download className="w-4 h-4" />
               <span>Download Image</span>
