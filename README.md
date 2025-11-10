@@ -2,16 +2,16 @@
 
 <p float="left">
   <img src="./client/src/assets/home.png" alt="HomePage" width="400" />
-  <img src="./client/src/assets/Dashboard.png" alt="Dashboard" width="400" />
+  <img src="./client/src/assets/dashboard.png" alt="Dashboard" width="400" />
 </p>
 
 <p float="left">
-  <img src="./client/src/assets/WriteArticle.png" alt="WriteArticle" width="400" />
+  <img src="./client/src/assets/writearticle.png" alt="WriteArticle" width="400" />
   <img src="./client/src/assets/generateimage.png" alt="GenerateImages" width="400" />
 </p>
 
 <p float="left">
-  <img src="./client/src/assets/RemoveBackground.png" alt="RemoveBackground" width="400" />
+  <img src="./client/src/assets/removebackground.png" alt="RemoveBackground" width="400" />
   <img src="./client/src/assets/resume.png" alt="ReviewResume" width="400" />
 </p>
 
