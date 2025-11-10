@@ -1,18 +1,26 @@
 # AI SaaS Platform
 
 <p float="left">
-  <img src="./client/src/assets/HomePage.png" alt="HomePage" width="400" />
+  <img src="./client/src/assets/Home.png" alt="HomePage" width="400" />
   <img src="./client/src/assets/Dashboard.png" alt="Dashboard" width="400" />
 </p>
 
 <p float="left">
   <img src="./client/src/assets/WriteArticle.png" alt="WriteArticle" width="400" />
-  <img src="./client/src/assets/GenerateImages.png" alt="GenerateImages" width="400" />
+  <img src="./client/src/assets/generateimage.png" alt="GenerateImages" width="400" />
 </p>
 
 <p float="left">
   <img src="./client/src/assets/RemoveBackground.png" alt="RemoveBackground" width="400" />
-  <img src="./client/src/assets/ReviewResume.png" alt="ReviewResume" width="400" />
+  <img src="./client/src/assets/resume.png" alt="ReviewResume" width="400" />
+</p>
+
+<p float="left">
+  <img src="./client/src/assets/objectremoval.png" alt="RemoveBackground" width="400" />
+  <img src="./client/src/assets/community.png" alt="ReviewResume" width="400" />
+</p>
+<p float="center">
+  <img src="./client/src/assets/blogtitle.png.png" alt="blogtitle" width="400" />
 </p>
 
 ---
@@ -36,6 +44,7 @@ The project is deployed on **Vercel (frontend)** and **serverless backend** for 
 ## 💻 Technology Stack
 
 **Frontend:**
+
 - React.js with Vite
 - Tailwind CSS
 - Clerk React for authentication
@@ -44,6 +53,7 @@ The project is deployed on **Vercel (frontend)** and **serverless backend** for 
 - React Hot Toast for notifications
 
 **Backend:**
+
 - Node.js with Express.js
 - Neon Serverless (PostgreSQL)
 - Clerk for user authentication
@@ -70,13 +80,17 @@ The project is deployed on **Vercel (frontend)** and **serverless backend** for 
 ## Run Project
 
 ### 1️⃣ Frontend
+
 1. Navigate to frontend folder:
+
 - cd client
 - npm i
 - npm run dev
 
 ### 2️⃣ Backend
+
 2.Navigate to backend folder:
+
 - cd server
 - npm i
 - npm run server
