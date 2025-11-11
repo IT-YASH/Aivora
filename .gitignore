@@ -31,7 +31,6 @@ out/
 .DS_Store
 
 # Temporary and cache files
-*.swp
 *.swo
 *.tmp
 *.temp
